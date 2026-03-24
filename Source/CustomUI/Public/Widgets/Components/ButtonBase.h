@@ -51,9 +51,12 @@ protected:
 	bool _HandleButtonEvents = true;
 
 	UPROPERTY(EditAnywhere, Category = "Button")
-	bool _UseFixedSize = false;
+	bool _UseFixedWidth = false;
 
-	UPROPERTY(EditAnywhere, Category = "Button", meta = (EditCondition = "_UseFixedSize"))
+	UPROPERTY(EditAnywhere, Category = "Button")
+	bool _UseFixedHeight = false;
+
+	UPROPERTY(EditAnywhere, Category = "Button", meta = (EditCondition = "_UseFixedWidth || _UseFixedHeight"))
 	FVector2D _FixedSize = FVector2D(100.0, 40.0f);
 
 	UPROPERTY(EditAnywhere, Category = "Button")

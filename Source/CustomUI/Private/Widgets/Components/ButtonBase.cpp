@@ -104,23 +104,44 @@ void UButtonBase::UpdateButtonSize()
 		auto sizebox_slot = Cast<UCanvasPanelSlot>(SizeBox->Slot);
 		if (IsValid(sizebox_slot))
 		{
-			sizebox_slot->SetAnchors(_UseFixedSize ? FAnchors(0.5f) : FAnchors(0.0f, 0.0f, 1.0f, 1.0f));
+			FAnchors anchors(0.0f, 0.0f, 1.0f, 1.0f);
+
+			if (_UseFixedWidth && _UseFixedHeight)
+			{
+				anchors = FAnchors(0.5f);
+			}
+			else if (_UseFixedWidth)
+			{
+				anchors = FAnchors(0.5f, 0.0f, 0.5f, 1.0f);
+			}
+			else if (_UseFixedHeight)
+			{
+				anchors = FAnchors(0.0f, 0.5f, 1.0f, 0.5f);
+			}
+
+			sizebox_slot->SetAnchors(anchors);
 
 			sizebox_slot->SetPosition(FVector2D(0.0f));
 			sizebox_slot->SetAlignment(FVector2D(0.5f));
 			sizebox_slot->SetSize(FVector2D(0.0f));
-
 			sizebox_slot->SetAutoSize(true);
 		}
 
-		if (_UseFixedSize)
+		if (_UseFixedWidth)
 		{
 			SizeBox->SetWidthOverride(_FixedSize.X);
-			SizeBox->SetHeightOverride(_FixedSize.Y);
 		}
 		else
 		{
 			SizeBox->ClearWidthOverride();
+		}
+
+		if (_UseFixedHeight)
+		{
+			SizeBox->SetHeightOverride(_FixedSize.Y);
+		}
+		else
+		{
 			SizeBox->ClearHeightOverride();
 		}
 	}
