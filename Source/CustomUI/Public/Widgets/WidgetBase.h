@@ -106,6 +106,8 @@ protected:
 	virtual void NativeDestruct() override;
 	virtual void OnAnimationFinished_Implementation(const UWidgetAnimation* _anim) override;
 	virtual void SynchronizeProperties() override;
+
+public:
 	virtual void SetVisibility(ESlateVisibility _visibility) override;
 
 protected:
