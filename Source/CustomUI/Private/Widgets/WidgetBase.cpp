@@ -18,6 +18,12 @@ void UWidgetBase::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	if (_WidgetHideType != EWidgetHideType::NA)
+	{
+		HideWidget();
+		return;
+	}
+
 	if (_IsShowOnNextTick)
 	{
 		SetRenderOpacity(0.0f);
