@@ -72,7 +72,7 @@ void UWidgetBase::SynchronizeProperties()
 void UWidgetBase::SetVisibility(ESlateVisibility _visibility)
 {
 	Super::SetVisibility(_visibility);
-	TRACE_WARNING(TEXT("이 함수 대신 UWidgetBase::Show/Hide 함수를 사용해주세요!"));
+	TRACE_WARNING(TEXT("주의! Construct된 위젯의 경우 Show/Hide를 사용해야 합니다.\n그 이전 시점인 경우 사용해주세요."));
 }
 
 void UWidgetBase::OnVisibilityChanged(ESlateVisibility _visibility)
@@ -129,6 +129,10 @@ void UWidgetBase::SetWidgetState(EWidgetState _new_state)
 	default:
 		break;
 	}
+
+	// Event를 통해 WidgetState를 건드렸을 경우 예외처리
+	if (_WidgetState != _new_state)
+		return;
 
 	if (_WidgetState == EWidgetState::Hide)
 	{
