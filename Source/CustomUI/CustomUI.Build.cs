@@ -28,20 +28,20 @@ public class CustomUI : ModuleRules
 			new string[]
 			{
 				"Core",
-                "CommonLibrary"
+                "CoreUObject",
+                "Engine",
+				"CommonLibrary",
+                "UMG",
+                "InputCore",
             }
-			);
+            );
 			
 		
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"CoreUObject",
-				"Engine",
-                "InputCore",
                 "Slate",
                 "SlateCore",
-                "UMG",
 	            "DeveloperSettings"
             }
             );
