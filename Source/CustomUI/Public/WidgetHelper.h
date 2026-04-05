@@ -20,7 +20,19 @@ UCLASS()
 class CUSTOMUI_API UWidgetHelper : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
-	
+
+public:
+	UFUNCTION(BlueprintPure, meta = (WorldContext = "_widget"))
+	static bool IsDesignTime(const UUserWidget* _widget);
+
+	UFUNCTION(BlueprintPure)
+	static FText GetStringTableText(const FString& _table_name, const FString& _key);
+
+	UFUNCTION(BlueprintPure, meta = (WorldContext = "_world_ctx"))
+	static UWidgetBase* GetRegisteredWidget(const UObject* _world_ctx, FName _widget_name);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Deprecated
 #pragma region Page
 public:
 	template<CONCEPT_PageBase T>
@@ -39,7 +51,8 @@ private:
 	static UPageBase* OpenPage_Internal(const UObject* _world_ctx, TSubclassOf<UPageBase> _page_class);
 
 #pragma endregion Page
-
+*/
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma region Popup
 public:
 	template<CONCEPT_PopupBase T>
@@ -65,14 +78,6 @@ public:
 	static UPopupBase* GetTopPopup(const UObject* _world_ctx);
 
 #pragma endregion Popup
-
-public:
-	UFUNCTION(BlueprintPure, meta = (WorldContext = "_widget"))
-	static bool IsDesignTime(const UUserWidget* _widget);
-
-	UFUNCTION(BlueprintPure)
-	static FText GetStringTableText(const FString& _table_name, const FString& _key);
-
 };
 
 #define GETTEXT(_table_name, _key) URulesHorrorWidgetHelper::GetStringTableText(_table_name, _key);

@@ -2,13 +2,16 @@
 
 
 #include "WidgetSubsystem.h"
+#include "CommonUtils.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "CustomUIDeveloperSettings.h"
+#include "WidgetRegistryDataAsset.h"
 #include "Widgets/PageBase.h"
 #include "Widgets/PopupBase.h"
 
 void UWidgetSubsystem::Initialize(FSubsystemCollectionBase& _collection)
 {
-
+	InitRegistryWidgets();
 }
 
 void UWidgetSubsystem::Deinitialize()
@@ -30,12 +33,15 @@ AWidgetPlayerController* UWidgetSubsystem::GetLocalPlayerController() const
 
 void UWidgetSubsystem::PlayerControllerChanged(APlayerController* _new_pc)
 {
+	_DefaultShowMouseCursor = _new_pc->ShouldShowMouseCursor();
+
 	ClearAllWidgets(true);
 	RebuildWidgets(Cast<AWidgetPlayerController>(_new_pc));
 }
 
 void UWidgetSubsystem::ClearAllWidgets(bool _clear_close_event)
 {
+	/*
 	if (IsValid(_CurrentPage))
 	{
 		if (_clear_close_event)
@@ -46,6 +52,7 @@ void UWidgetSubsystem::ClearAllWidgets(bool _clear_close_event)
 	}
 
 	_CachedPageList.Empty();
+	*/
 
 	for (UPopupBase* popup : _CurrentPopups)
 	{
@@ -65,6 +72,7 @@ void UWidgetSubsystem::RebuildWidgets(AWidgetPlayerController* _pc)
 	if (IsInvalid(_pc))
 		return;
 
+	/*
 	// page
 	if (IsValid(_RemainingPageClass))
 	{
@@ -78,6 +86,7 @@ void UWidgetSubsystem::RebuildWidgets(AWidgetPlayerController* _pc)
 			OpenPage(initial_page_class);
 		}
 	}
+	*/
 
 	// popups
 	for (const auto& remaining_popup_class : _RemainingPopupClasses)
@@ -86,6 +95,47 @@ void UWidgetSubsystem::RebuildWidgets(AWidgetPlayerController* _pc)
 	}
 }
 
+void UWidgetSubsystem::InitRegistryWidgets()
+{
+	auto dev_settings = GetDefault<UCustomUIDeveloperSettings>();
+	if (IsInvalid(dev_settings))
+		return;
+
+	_WidgetRegistryDataAsset = dev_settings->_WidgetRegistryDataAsset.LoadSynchronous();
+
+	auto game_inst = GetGameInstance();
+	if (IsInvalid(game_inst))
+		return;
+
+	for (const auto& widget_class_pair : _WidgetRegistryDataAsset->GetWidgetClassMap())
+	{
+		const auto& widget_name = widget_class_pair.Key;
+		const auto& widget_class = widget_class_pair.Value;
+
+		if (widget_name.IsNone() == false && IsValid(widget_class))
+		{
+			auto widget = CreateWidget<UWidgetBase>(game_inst, widget_class);
+			if (IsValid(widget))
+			{
+				_RegisteredWidgetMap.Add(widget_name, widget);
+			}
+		}
+	}
+}
+
+UWidgetBase* UWidgetSubsystem::GetRegisteredWidget(FName _widget_name)
+{
+	auto widget_ptr = _RegisteredWidgetMap.Find(_widget_name);
+	if (IsInvalid(widget_ptr))
+	{
+		TRACE_ERROR(TEXT("등록된 위젯이 없습니다 : %s"), *_widget_name.ToString());
+		return nullptr;
+	}
+
+	return *widget_ptr;
+}
+
+/*
 UPageBase* UWidgetSubsystem::OpenPage(TSubclassOf<UPageBase> _page_class)
 {
 	auto pc = GetLocalPlayerController();
@@ -202,6 +252,7 @@ UPageBase* UWidgetSubsystem::FindOrCreatePage(TSubclassOf<UPageBase> _page_class
 
 	return nullptr;
 }
+*/
 
 UPopupBase* UWidgetSubsystem::OpenPopup(TSubclassOf<UPopupBase> _popup_class)
 {
@@ -248,8 +299,6 @@ void UWidgetSubsystem::OnPopupClosed(UWidgetBase* _widget, bool _is_removed)
 		_RemainingPopupClasses.Remove(popup->GetClass());
 	}
 
-	pc->SetShowMouseCursor(!popup->GetConfig().ShowMouseCursor);
-
 	if(_CurrentPopups.Contains(popup))
 	{
 		_CurrentPopups.Remove(popup);
@@ -261,9 +310,9 @@ void UWidgetSubsystem::OnPopupClosed(UWidgetBase* _widget, bool _is_removed)
 	{
 		pc->SetShowMouseCursor(top_popup->GetConfig().ShowMouseCursor);
 	}
-	else if(IsValid(_CurrentPage))
+	else
 	{
-		pc->SetShowMouseCursor(_CurrentPage->GetConfig().ShowMouseCursor);
+		pc->SetShowMouseCursor(_DefaultShowMouseCursor);
 	}
 }
 
@@ -323,4 +372,15 @@ bool UWidgetSubsystem::IsPopupOpened(TSubclassOf<UPopupBase> _popup_class) const
 	}
 
 	return false;
+}
+
+class UGameInstance* UWidgetSubsystem::GetGameInstance() const
+{
+	auto world = GetWorld();
+	if (IsValid(world))
+	{
+		return world->GetGameInstance();
+	}
+
+	return nullptr;
 }

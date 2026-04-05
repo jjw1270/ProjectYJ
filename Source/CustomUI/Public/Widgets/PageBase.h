@@ -9,7 +9,7 @@
 /**
  *
  */
-UCLASS(Abstract)
+UCLASS(Abstract, meta = (DeprecatedNode, DeprecationMessage = "Page는 이제 안쓰는 개념입니다."))
 class CUSTOMUI_API UPageBase : public UWidgetBase
 {
 	GENERATED_BODY()

@@ -8,6 +8,18 @@
 #include "StringTableSubsystem.h"
 
 
+UWidgetBase* UWidgetHelper::GetRegisteredWidget(const UObject* _world_ctx, FName _widget_name)
+{
+	auto widget_subsys = UCommonUtils::GetLocalPlayerSubsystem<UWidgetSubsystem>(_world_ctx);
+	if (IsValid(widget_subsys))
+	{
+		return widget_subsys->GetRegisteredWidget(_widget_name);
+	}
+
+	return nullptr;
+}
+
+/*
 UPageBase* UWidgetHelper::OpenPage_Internal(const UObject* _world_ctx, TSubclassOf<UPageBase> _page_class)
 {
 	auto widget_subsys = UCommonUtils::GetLocalPlayerSubsystem<UWidgetSubsystem>(_world_ctx);
@@ -18,6 +30,7 @@ UPageBase* UWidgetHelper::OpenPage_Internal(const UObject* _world_ctx, TSubclass
 
 	return nullptr;
 }
+*/
 
 UPopupBase* UWidgetHelper::OpenPopup_Internal(const UObject* _world_ctx, TSubclassOf<UPopupBase> _popup_class)
 {

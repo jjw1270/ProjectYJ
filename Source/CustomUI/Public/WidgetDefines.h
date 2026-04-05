@@ -50,7 +50,7 @@ UENUM(BlueprintType)
 enum class EWidgetZOrder : uint8
 {
 	Zero = 0,
-	Page			UMETA(Hidden),
+	Page			UMETA(Hidden, Deprecated),
 	Popup			UMETA(Hidden),
 };
 

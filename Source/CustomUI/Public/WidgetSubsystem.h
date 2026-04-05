@@ -7,6 +7,7 @@
 #include "WidgetPlayerController.h"
 #include "WidgetSubsystem.generated.h"
 
+class UWidgetBase;
 class UPageBase;
 class UPopupBase;
 
@@ -29,8 +30,26 @@ protected:
 	void ClearAllWidgets(bool _clear_close_event);
 	void RebuildWidgets(AWidgetPlayerController* _pc);
 
+#pragma region WidgetRegistry
+// 전역 레벨에서 공용으로 사용하는 위젯을 관리하는 용도
+protected:
+	UPROPERTY()
+	TObjectPtr<class UWidgetRegistryDataAsset> _WidgetRegistryDataAsset = nullptr;
+
+	UPROPERTY()
+	TMap<FName, TObjectPtr<UWidgetBase>> _RegisteredWidgetMap;  // map jump에도 사라지지 않음
+
+public:
+	UWidgetBase* GetRegisteredWidget(FName _widget_name);
+
+protected:
+	void InitRegistryWidgets();
+
+#pragma endregion WidgetRegistry
 ///////////////////////////////////////////////////////////////////
+/* Deprecated!
 #pragma region Page
+// viewport에 오직 하나의 Page만 존재할 수 있음
 protected:
 	UPROPERTY()
 	TSubclassOf<UPageBase> _RemainingPageClass = nullptr;
@@ -39,7 +58,7 @@ protected:
 	TObjectPtr<UPageBase> _CurrentPage = nullptr;
 
 	UPROPERTY()
-	TSet<UPageBase*> _CachedPageList; // 재사용을 위함. map jump시 초기화
+	TSet <TObjectPtr<UPageBase>> _CachedPageList; // 재사용을 위함. map jump시 초기화
 
 protected:
 	UPageBase* OpenPage(TSubclassOf<UPageBase> _page_class);
@@ -50,10 +69,12 @@ protected:
 	UPageBase* GetCurrentPage() const { return _CurrentPage; }
 
 #pragma endregion Page
-
+*/
 ///////////////////////////////////////////////////////////////////
 #pragma region Popup
 protected:
+	bool _DefaultShowMouseCursor = false;
+
 	UPROPERTY()
 	TArray<TSubclassOf<UPopupBase>> _RemainingPopupClasses;
 
@@ -73,4 +94,6 @@ protected:
 
 #pragma endregion Popup
 
+private:
+	class UGameInstance* GetGameInstance() const;
 };
