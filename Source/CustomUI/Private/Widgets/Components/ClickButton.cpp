@@ -17,7 +17,7 @@ void UClickButton::NativeOnMouseEnter(const FGeometry& _geo, const FPointerEvent
 	{
 		SetButtonState(EButtonState::Disabled);
 	}
-	else if (_ButtonState != EButtonState::Hovered)
+	else if (_ButtonState != EButtonState::Hovered && _ButtonState != EButtonState::Pressed)
 	{
 		SetButtonState(EButtonState::Hovered);
 		PlaySound(_HoverSound);
@@ -28,7 +28,8 @@ void UClickButton::NativeOnMouseLeave(const FPointerEvent& _mouse_event)
 {
 	Super::NativeOnMouseLeave(_mouse_event);
 
-	ResetButtonState();
+	if (_ButtonState != EButtonState::Pressed)
+		ResetButtonState();
 }
 
 FReply UClickButton::NativeOnMouseButtonDown(const FGeometry& _geo, const FPointerEvent& _mouse_event)
