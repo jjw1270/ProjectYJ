@@ -40,7 +40,7 @@ public:
 		return Cast<T>(OpenPage_Internal(_world_ctx, _page_class));
 	}
 
-	UFUNCTION(BlueprintCallable, meta = (WorldContext = "_world_ctx", Deprecated, DeprecationMessage = "Page는 이제 안쓰는 개념입니다."))
+	UFUNCTION(BlueprintCallable, meta = (WorldContext = "_world_ctx", DeprecatedFunction, DeprecationMessage = "Page는 이제 안쓰는 개념입니다."))
 	static  UPageBase* OpenPage(const UObject* _world_ctx, TSubclassOf<UPageBase> _page_class)
 	{
 		return OpenPage_Internal(_world_ctx, _page_class);
