@@ -41,7 +41,7 @@ void UWidgetSubsystem::PlayerControllerChanged(APlayerController* _new_pc)
 
 void UWidgetSubsystem::ClearAllWidgets(bool _clear_close_event)
 {
-	/*
+#if FEATURE_PAGE
 	if (IsValid(_CurrentPage))
 	{
 		if (_clear_close_event)
@@ -52,7 +52,7 @@ void UWidgetSubsystem::ClearAllWidgets(bool _clear_close_event)
 	}
 
 	_CachedPageList.Empty();
-	*/
+#endif
 
 	for (UPopupBase* popup : _CurrentPopups)
 	{
@@ -72,7 +72,7 @@ void UWidgetSubsystem::RebuildWidgets(AWidgetPlayerController* _pc)
 	if (IsInvalid(_pc))
 		return;
 
-	/*
+#if FEATURE_PAGE
 	// page
 	if (IsValid(_RemainingPageClass))
 	{
@@ -86,7 +86,7 @@ void UWidgetSubsystem::RebuildWidgets(AWidgetPlayerController* _pc)
 			OpenPage(initial_page_class);
 		}
 	}
-	*/
+#endif
 
 	// popups
 	for (const auto& remaining_popup_class : _RemainingPopupClasses)
@@ -102,6 +102,11 @@ void UWidgetSubsystem::InitRegistryWidgets()
 		return;
 
 	_WidgetRegistryDataAsset = dev_settings->_WidgetRegistryDataAsset.LoadSynchronous();
+	if (IsInvalid(_WidgetRegistryDataAsset))
+	{
+		TRACE_ERROR(TEXT("CustomUIDeveloperSettings 에서 _WidgetRegistryDataAsset 를 설정하세요."));
+		return;
+	}
 
 	auto game_inst = GetGameInstance();
 	if (IsInvalid(game_inst))
