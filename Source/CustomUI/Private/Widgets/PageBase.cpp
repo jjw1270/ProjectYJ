@@ -5,10 +5,12 @@
 
 void UPageBase::SynchronizeProperties()
 {
+#if FEATURE_PAGE
 	Super::SynchronizeProperties();
 
 	if(_PageConfig.SetFocus != IsFocusable())
 	{
 		SetIsFocusable(_PageConfig.SetFocus);
 	}
+#endif
 }

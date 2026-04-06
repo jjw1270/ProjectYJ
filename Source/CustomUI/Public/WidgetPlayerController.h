@@ -13,12 +13,10 @@ class CUSTOMUI_API AWidgetPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
-/* Deprecated
 protected:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, meta = (Deprecated, DeprecationMessage = "Page는 이제 안쓰는 개념입니다."))
 	TSubclassOf<UPageBase> _InitialPageClass = nullptr;
 
 public:
 	TSubclassOf<UPageBase> GetInitialPageClass() const { return _InitialPageClass; }
-*/
 };

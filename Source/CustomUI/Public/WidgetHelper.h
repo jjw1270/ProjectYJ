@@ -32,7 +32,6 @@ public:
 	static UWidgetBase* GetRegisteredWidget(const UObject* _world_ctx, FName _widget_name);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/* Deprecated
 #pragma region Page
 public:
 	template<CONCEPT_PageBase T>
@@ -41,7 +40,7 @@ public:
 		return Cast<T>(OpenPage_Internal(_world_ctx, _page_class));
 	}
 
-	UFUNCTION(BlueprintCallable, meta = (WorldContext = "_world_ctx"))
+	UFUNCTION(BlueprintCallable, meta = (WorldContext = "_world_ctx", Deprecated, DeprecationMessage = "Page는 이제 안쓰는 개념입니다."))
 	static  UPageBase* OpenPage(const UObject* _world_ctx, TSubclassOf<UPageBase> _page_class)
 	{
 		return OpenPage_Internal(_world_ctx, _page_class);
@@ -51,7 +50,6 @@ private:
 	static UPageBase* OpenPage_Internal(const UObject* _world_ctx, TSubclassOf<UPageBase> _page_class);
 
 #pragma endregion Page
-*/
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma region Popup
 public:

@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "WidgetDefines.generated.h"
 
-
 UENUM(BlueprintType)
 enum class EInputMode : uint8
 {
@@ -43,14 +42,15 @@ public:
 
 	UPROPERTY(EditAnywhere, meta=(Tooltip="Remain On Level Changed"))
 	bool RemainOnLevelChanged = false;
-
 };
 
 UENUM(BlueprintType)
 enum class EWidgetZOrder : uint8
 {
 	Zero = 0,
-	Page			UMETA(Hidden, Deprecated),
+#if FEATURE_PAGE
+	Page			UMETA(Hidden),
+#endif
 	Popup			UMETA(Hidden),
 };
 

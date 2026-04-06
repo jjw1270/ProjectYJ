@@ -19,18 +19,19 @@ UWidgetBase* UWidgetHelper::GetRegisteredWidget(const UObject* _world_ctx, FName
 	return nullptr;
 }
 
-/*
+
 UPageBase* UWidgetHelper::OpenPage_Internal(const UObject* _world_ctx, TSubclassOf<UPageBase> _page_class)
 {
+#if FEATURE_PAGE
 	auto widget_subsys = UCommonUtils::GetLocalPlayerSubsystem<UWidgetSubsystem>(_world_ctx);
 	if (IsValid(widget_subsys))
 	{
 		return widget_subsys->OpenPage(_page_class);
 	}
+#endif
 
 	return nullptr;
 }
-*/
 
 UPopupBase* UWidgetHelper::OpenPopup_Internal(const UObject* _world_ctx, TSubclassOf<UPopupBase> _popup_class)
 {

@@ -22,9 +22,10 @@ public class CustomUI : ModuleRules
 				// ... add other private include paths required here ...
 			}
 			);
-			
-		
-		PublicDependencyModuleNames.AddRange(
+
+        PublicDefinitions.Add("FEATURE_PAGE=0");
+
+        PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
 				"Core",

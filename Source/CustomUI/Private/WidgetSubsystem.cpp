@@ -135,9 +135,12 @@ UWidgetBase* UWidgetSubsystem::GetRegisteredWidget(FName _widget_name)
 	return *widget_ptr;
 }
 
-/*
 UPageBase* UWidgetSubsystem::OpenPage(TSubclassOf<UPageBase> _page_class)
 {
+#if !FEATURE_PAGE
+	return nullptr;
+
+#else
 	auto pc = GetLocalPlayerController();
 	if (IsInvalid(pc))
 		return nullptr;
@@ -205,10 +208,15 @@ UPageBase* UWidgetSubsystem::OpenPage(TSubclassOf<UPageBase> _page_class)
 	pc->SetShowMouseCursor(_CurrentPage->GetConfig().ShowMouseCursor);
 
 	return _CurrentPage;
+#endif
 }
 
 UPageBase* UWidgetSubsystem::FindOrCreatePage(TSubclassOf<UPageBase> _page_class)
 {
+#if !FEATURE_PAGE
+	return nullptr;
+
+#else
 	if (IsInvalid(_page_class))
 		return nullptr;
 
@@ -251,8 +259,8 @@ UPageBase* UWidgetSubsystem::FindOrCreatePage(TSubclassOf<UPageBase> _page_class
 	}
 
 	return nullptr;
+#endif
 }
-*/
 
 UPopupBase* UWidgetSubsystem::OpenPopup(TSubclassOf<UPopupBase> _popup_class)
 {

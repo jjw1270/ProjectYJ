@@ -47,7 +47,6 @@ protected:
 
 #pragma endregion WidgetRegistry
 ///////////////////////////////////////////////////////////////////
-/* Deprecated!
 #pragma region Page
 // viewport에 오직 하나의 Page만 존재할 수 있음
 protected:
@@ -58,7 +57,7 @@ protected:
 	TObjectPtr<UPageBase> _CurrentPage = nullptr;
 
 	UPROPERTY()
-	TSet <TObjectPtr<UPageBase>> _CachedPageList; // 재사용을 위함. map jump시 초기화
+	TSet<TObjectPtr<UPageBase>> _CachedPageList; // 재사용을 위함. map jump시 초기화
 
 protected:
 	UPageBase* OpenPage(TSubclassOf<UPageBase> _page_class);
@@ -69,7 +68,6 @@ protected:
 	UPageBase* GetCurrentPage() const { return _CurrentPage; }
 
 #pragma endregion Page
-*/
 ///////////////////////////////////////////////////////////////////
 #pragma region Popup
 protected:
