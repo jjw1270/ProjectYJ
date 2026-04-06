@@ -49,9 +49,9 @@ enum class EWidgetZOrder : uint8
 {
 	Zero = 0,
 #if FEATURE_PAGE
-	Page			UMETA(Hidden),
+	Page = 10,
 #endif
-	Popup			UMETA(Hidden),
+	Popup = 20	,
 };
 
 USTRUCT(BlueprintType)
