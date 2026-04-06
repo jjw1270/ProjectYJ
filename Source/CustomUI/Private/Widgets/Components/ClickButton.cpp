@@ -17,7 +17,7 @@ void UClickButton::NativeOnMouseEnter(const FGeometry& _geo, const FPointerEvent
 	{
 		SetButtonState(EButtonState::Disabled);
 	}
-	else if (_ButtonState != EButtonState::Hovered && _ButtonState != EButtonState::Pressed)
+	else if (_ButtonState == EButtonState::Normal)
 	{
 		SetButtonState(EButtonState::Hovered);
 		PlaySound(_HoverSound);
