@@ -8,10 +8,13 @@
 #include "WidgetRegistryDataAsset.h"
 #include "Widgets/PageBase.h"
 #include "Widgets/PopupBase.h"
+#include "Widgets/Components/ClickButton.h"
+#include "GameFramework/InputSettings.h"
 
 void UWidgetSubsystem::Initialize(FSubsystemCollectionBase& _collection)
 {
 	InitRegistryWidgets();
+	InitButtonSettings();
 }
 
 void UWidgetSubsystem::Deinitialize()
@@ -92,6 +95,15 @@ void UWidgetSubsystem::RebuildWidgets(AWidgetPlayerController* _pc)
 	for (const auto& remaining_popup_class : _RemainingPopupClasses)
 	{
 		OpenPopup(remaining_popup_class);
+	}
+}
+
+void UWidgetSubsystem::InitButtonSettings()
+{
+	const auto input_settings = GetDefault<UInputSettings>();
+	if (IsValid(input_settings))
+	{
+		UClickButton::SetDoubleClickThreshold(input_settings->DoubleClickTime);
 	}
 }
 

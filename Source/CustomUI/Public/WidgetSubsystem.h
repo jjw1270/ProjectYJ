@@ -30,6 +30,10 @@ protected:
 	void ClearAllWidgets(bool _clear_close_event);
 	void RebuildWidgets(AWidgetPlayerController* _pc);
 
+#pragma region Button
+	void InitButtonSettings();
+#pragma endregion Button
+///////////////////////////////////////////////////////////////////
 #pragma region WidgetRegistry
 // 전역 레벨에서 공용으로 사용하는 위젯을 관리하는 용도
 protected:

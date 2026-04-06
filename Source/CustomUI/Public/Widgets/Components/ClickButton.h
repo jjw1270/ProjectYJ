@@ -23,6 +23,10 @@ protected:
 
 	static TSet<FKey> SubClickKeyList;
 
+	static double _DoubleClickThreshold;
+
+	double _LastClickTime = 0.0f;
+
 public:
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnDoubleClicked, UClickButton*, _btn);
 
@@ -40,8 +44,10 @@ protected:
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& _geo, const FPointerEvent& _mouse_event) override;
 	virtual FReply NativeOnMouseButtonUp(const FGeometry& _geo, const FPointerEvent& _mouse_event) override;
 	virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& _geo, const FPointerEvent& _mouse_event) override;
+	
+	void CheckDoubleClick();
 
 public:
 	static void SetSubClickKeyList(const TSet<FKey>& _key_list);
-
+	static void SetDoubleClickThreshold(double _second);
 };
