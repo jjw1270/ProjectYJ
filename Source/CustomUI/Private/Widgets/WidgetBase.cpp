@@ -81,6 +81,12 @@ void UWidgetBase::SetVisibility(ESlateVisibility _visibility)
 	TRACE_WARNING(TEXT("이 함수 대신 UWidgetBase::Show/Hide 함수를 사용해주세요!"));
 }
 
+void UWidgetBase::RemoveFromParent()
+{
+	Super::RemoveFromParent();
+	TRACE_WARNING(TEXT("이 함수 대신 UWidgetBase::Hide/Close 함수를 사용해주세요!"));
+}
+
 void UWidgetBase::OnVisibilityChanged(ESlateVisibility _visibility)
 {
 	switch (_visibility)
@@ -254,7 +260,7 @@ void UWidgetBase::HideWidget()
 		TRACE_ERROR(TEXT("_HideType이 NA 일 수 없습니다."));
 		break;
 	case EWidgetHideType::RemoveFromParent:
-		RemoveFromParent();
+		Super::RemoveFromParent();
 		break;
 	case EWidgetHideType::Collapsed:
 		Super::SetVisibility(ESlateVisibility::Collapsed);
