@@ -70,7 +70,7 @@ protected:
 	bool _IsShowOnNextTick = true;
 
 	UPROPERTY(EditAnywhere, meta = (Tooltip = "Show일 경우 하위 모든 위젯의 Show를 호출할 것인지?"))
-	bool _TraverseWidgetToShow = true;
+	bool _IsTraverseWidgetToShow = true;
 
 	UPROPERTY(Transient, meta = (BindWidgetAnimOptional))
 	TObjectPtr<UWidgetAnimation> ShowAnim = nullptr;
@@ -129,6 +129,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Show(EWidgetShowType _show_type, bool _is_skip_anim = false);
+
+	void TraverseWidgetToShow();
+	void TraverseWidgetToShow_Internal(UWidget* _widget);
 
 	UFUNCTION(BlueprintCallable)
 	void Hide(EWidgetHideType _hide_type, bool _is_skip_anim = false);

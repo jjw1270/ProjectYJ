@@ -5,6 +5,7 @@
 #include "Animation/WidgetAnimation.h"
 #include "Blueprint/WidgetTree.h"
 #include "MovieScene.h"
+#include "Components/WidgetSwitcher.h"
 
 void UWidgetBase::NativeOnInitialized()
 {
@@ -127,21 +128,9 @@ void UWidgetBase::SetWidgetState(EWidgetState _new_state)
 			_OnShowEvent.Broadcast(this);
 		OnShow();
 
-		if (_TraverseWidgetToShow)
-		{
-			if (IsValid(WidgetTree))
-			{
-				WidgetTree->ForEachWidget([&](UWidget* _widget)
-					{
-						auto widget_base_widget = Cast<UWidgetBase>(_widget);
-						if (IsValid(widget_base_widget))
-						{
-							widget_base_widget->SetWidgetState(EWidgetState::Showing);
-						}
-					}
-				);
-			}
-		}
+		if (_IsTraverseWidgetToShow)
+			TraverseWidgetToShow();
+
 		break;
 	case EWidgetState::Idle:
 		if (_OnIdleEvent.IsBound())
@@ -232,6 +221,48 @@ void UWidgetBase::Show(EWidgetShowType _show_type, bool _is_skip_anim)
 	if (_is_skip_anim)
 	{
 		SetWidgetState(EWidgetState::Idle);
+	}
+}
+
+void UWidgetBase::TraverseWidgetToShow()
+{
+	if (IsInvalid(WidgetTree))
+		return;
+
+	TraverseWidgetToShow_Internal(WidgetTree->RootWidget);
+}
+
+void UWidgetBase::TraverseWidgetToShow_Internal(UWidget* _widget)
+{
+	if (IsInvalid(_widget))
+		return;
+
+	auto widget_base_widget = Cast<UWidgetBase>(_widget);
+	if (IsValid(widget_base_widget))
+	{
+		const auto parent = widget_base_widget->GetParent();
+		if (IsValid(parent))
+		{
+			 //widget switcher 말고도 이런 케이스가 더 생길수도
+			const auto widget_switcher = Cast<UWidgetSwitcher>(parent);
+			if (IsValid(widget_switcher))
+			{
+				if (widget_switcher->GetActiveWidget() != widget_base_widget)
+					return;
+			}
+		}
+
+		widget_base_widget->SetWidgetState(EWidgetState::Showing);
+	}
+
+	const auto panel = Cast<UPanelWidget>(_widget);
+	if (IsValid(panel))
+	{
+		const int32 child_count = panel->GetChildrenCount();
+		for (int32 i = 0; i < child_count; ++i)
+		{
+			TraverseWidgetToShow_Internal(panel->GetChildAt(i));
+		}
 	}
 }
 
