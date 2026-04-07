@@ -131,6 +131,7 @@ public:
 	void Show(EWidgetShowType _show_type, bool _is_skip_anim = false);
 
 	void TraverseWidgetToShow();
+	bool CanTraverseWidget(UWidget* _widget) const;
 	void TraverseWidgetToShow_Internal(UWidget* _widget);
 
 	UFUNCTION(BlueprintCallable)

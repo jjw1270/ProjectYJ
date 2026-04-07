@@ -232,30 +232,50 @@ void UWidgetBase::TraverseWidgetToShow()
 	TraverseWidgetToShow_Internal(WidgetTree->RootWidget);
 }
 
-void UWidgetBase::TraverseWidgetToShow_Internal(UWidget* _widget)
+bool UWidgetBase::CanTraverseWidget(UWidget* _widget) const
 {
 	if (IsInvalid(_widget))
+		return false;
+
+	if (_widget->IsVisible() == false)
+		return false;
+
+	const auto parent = _widget->GetParent();
+	if (IsValid(parent))
+	{
+		const auto widget_switcher = Cast<UWidgetSwitcher>(parent);
+		if (IsValid(widget_switcher))
+		{
+			if (widget_switcher->GetActiveWidget() != _widget)
+				return false;
+		}
+	}
+
+	return true;
+}
+
+void UWidgetBase::TraverseWidgetToShow_Internal(UWidget* _widget)
+{
+	if (CanTraverseWidget(_widget) == false)
 		return;
 
 	auto widget_base_widget = Cast<UWidgetBase>(_widget);
 	if (IsValid(widget_base_widget))
 	{
-		const auto parent = widget_base_widget->GetParent();
-		if (IsValid(parent))
-		{
-			 //widget switcher 말고도 이런 케이스가 더 생길수도
-			const auto widget_switcher = Cast<UWidgetSwitcher>(parent);
-			if (IsValid(widget_switcher))
-			{
-				if (widget_switcher->GetActiveWidget() != widget_base_widget)
-					return;
-			}
-		}
-
 		widget_base_widget->SetWidgetState(EWidgetState::Showing);
 	}
 
-	const auto panel = Cast<UPanelWidget>(_widget);
+	auto user_widget = Cast<UUserWidget>(_widget);
+	if (IsValid(user_widget))
+	{
+		if (user_widget != this && IsAllValid(user_widget->WidgetTree, user_widget->WidgetTree->RootWidget))
+		{
+			TraverseWidgetToShow_Internal(user_widget->WidgetTree->RootWidget);
+			return;
+		}
+	}
+
+	auto panel = Cast<UPanelWidget>(_widget);
 	if (IsValid(panel))
 	{
 		const int32 child_count = panel->GetChildrenCount();
