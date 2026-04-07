@@ -109,7 +109,6 @@ protected:
 
 public:
 	virtual void SetVisibility(ESlateVisibility _visibility) override;
-	virtual void RemoveFromParent() override;
 
 protected:
 	UFUNCTION()
