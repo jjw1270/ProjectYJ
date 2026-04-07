@@ -69,6 +69,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	bool _IsShowOnNextTick = true;
 
+	UPROPERTY(EditAnywhere, meta = (Tooltip = "Show일 경우 하위 모든 위젯의 Show를 호출할 것인지?"))
+	bool _TraverseWidgetToShow = true;
+
 	UPROPERTY(Transient, meta = (BindWidgetAnimOptional))
 	TObjectPtr<UWidgetAnimation> ShowAnim = nullptr;
 

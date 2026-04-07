@@ -126,6 +126,22 @@ void UWidgetBase::SetWidgetState(EWidgetState _new_state)
 		if (_OnShowEvent.IsBound())
 			_OnShowEvent.Broadcast(this);
 		OnShow();
+
+		if (_TraverseWidgetToShow)
+		{
+			if (IsValid(WidgetTree))
+			{
+				WidgetTree->ForEachWidget([&](UWidget* _widget)
+					{
+						auto widget_base_widget = Cast<UWidgetBase>(_widget);
+						if (IsValid(widget_base_widget))
+						{
+							widget_base_widget->SetWidgetState(EWidgetState::Showing);
+						}
+					}
+				);
+			}
+		}
 		break;
 	case EWidgetState::Idle:
 		if (_OnIdleEvent.IsBound())
@@ -227,8 +243,6 @@ void UWidgetBase::Hide(EWidgetHideType _hide_type, bool _is_skip_anim)
 		return;
 	}
 
-	if (_WidgetHideType == _hide_type)
-		return;
 	_WidgetHideType = _hide_type;
 
 	if (_is_skip_anim)
