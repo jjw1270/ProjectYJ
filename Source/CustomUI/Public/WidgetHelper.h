@@ -78,4 +78,4 @@ public:
 #pragma endregion Popup
 };
 
-#define GETTEXT(_table_name, _key) URulesHorrorWidgetHelper::GetStringTableText(_table_name, _key);
+#define GETTEXT(_table_name, _key) UWidgetHelper::GetStringTableText(_table_name, _key);
