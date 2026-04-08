@@ -66,8 +66,8 @@ public:
 	FName GetWidgetID() const { return _WidgetID; }
 
 protected:
-	UPROPERTY(EditAnywhere)
-	bool _IsShowOnNextTick = true;
+	UPROPERTY(EditAnywhere, meta = (Tooltip = "첫 프레임 opacity를 0으로 해서 깜빡임 방지"))
+	bool _IsPreventInitialFlicker = true;
 
 	UPROPERTY(EditAnywhere, meta = (Tooltip = "Show일 경우 하위 모든 위젯의 Show를 호출할 것인지?"))
 	bool _IsTraverseWidgetToShow = true;
@@ -122,9 +122,9 @@ protected:
 	void OnSynchronizeProperties();
 
 public:
-	void SetIsShowOnNextTick(bool _value)
+	void SetPreventInitialFlicker(bool _value)
 	{
-		_IsShowOnNextTick = _value;
+		_IsPreventInitialFlicker = _value;
 	}
 
 	UFUNCTION(BlueprintCallable)

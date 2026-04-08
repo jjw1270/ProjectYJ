@@ -25,11 +25,6 @@ void UWidgetBase::NativeConstruct()
 		return;
 	}
 
-	if (_IsShowOnNextTick)
-	{
-		SetRenderOpacity(0.0f);
-	}
-
 	if(IsVisible() && _WidgetState == EWidgetState::Hide)
 	{
 		SetWidgetState(EWidgetState::Showing);
@@ -94,11 +89,6 @@ void UWidgetBase::OnVisibilityChanged(ESlateVisibility _visibility)
 	case ESlateVisibility::Visible:
 	case ESlateVisibility::HitTestInvisible:
 	case ESlateVisibility::SelfHitTestInvisible:
-		if (_IsShowOnNextTick)
-		{
-			SetRenderOpacity(0.0f);
-		}
-
 		if (_WidgetState == EWidgetState::Hide)
 		{
 			SetWidgetState(EWidgetState::Showing);
@@ -159,9 +149,22 @@ void UWidgetBase::SetWidgetState(EWidgetState _new_state)
 	switch (_WidgetState)
 	{
 	case EWidgetState::Showing:
-		if (_IsShowOnNextTick)
+		if (_IsPreventInitialFlicker)
 		{
-			SetRenderOpacity(1.0f);
+			SetRenderOpacity(0.0f);
+
+			auto world = GetWorld();
+			if (IsValid(world))
+			{
+				world->GetTimerManager().SetTimerForNextTick(
+					FTimerDelegate::CreateWeakLambda(this,
+						[this]()
+						{
+							SetRenderOpacity(1.0f);
+						}
+					)
+				);
+			}
 		}
 		anim_to_play = ShowAnim;
 		anim_config = &_ShowAnimConfig;
@@ -221,6 +224,10 @@ void UWidgetBase::Show(EWidgetShowType _show_type, bool _is_skip_anim)
 	if (_is_skip_anim)
 	{
 		SetWidgetState(EWidgetState::Idle);
+	}
+	else
+	{
+		SetWidgetState(EWidgetState::Showing);
 	}
 }
 
