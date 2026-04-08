@@ -149,7 +149,7 @@ void UWidgetBase::SetWidgetState(EWidgetState _new_state)
 	switch (_WidgetState)
 	{
 	case EWidgetState::Showing:
-		if (_IsPreventInitialFlicker)
+		if (_IsPreventInitialFlicker && IsValid(ShowAnim))
 		{
 			SetRenderOpacity(0.0f);
 

@@ -66,7 +66,7 @@ public:
 	FName GetWidgetID() const { return _WidgetID; }
 
 protected:
-	UPROPERTY(EditAnywhere, meta = (Tooltip = "첫 프레임 opacity를 0으로 해서 깜빡임 방지"))
+	UPROPERTY(EditAnywhere, meta = (EditCondition = " ShowAnim != nullptr", Tooltip = "첫 프레임 opacity를 0으로 해서 깜빡임 방지\nShowAnim이 있을때만 동작합니다."))
 	bool _IsPreventInitialFlicker = true;
 
 	UPROPERTY(EditAnywhere, meta = (Tooltip = "Show일 경우 하위 모든 위젯의 Show를 호출할 것인지?"))
