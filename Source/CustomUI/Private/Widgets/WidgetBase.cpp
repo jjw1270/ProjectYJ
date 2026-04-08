@@ -295,6 +295,9 @@ void UWidgetBase::TraverseWidgetToShow_Internal(UWidget* _widget)
 
 void UWidgetBase::Hide(EWidgetHideType _hide_type, bool _is_skip_anim)
 {
+	if (_WidgetState == EWidgetState::Hiding || _WidgetState == EWidgetState::Hide)
+		return;
+
 	if (_hide_type == EWidgetHideType::NA)
 	{
 		TRACE_ERROR(TEXT("_hide_type이 NA 일 수 없습니다."));
