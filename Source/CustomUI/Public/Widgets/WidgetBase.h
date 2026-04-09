@@ -137,8 +137,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Hide(EWidgetHideType _hide_type, bool _is_skip_anim = false);
 
-	UFUNCTION(BlueprintCallable)
-	virtual void Close(bool _is_skip_anim = false);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Close(bool _is_skip_anim = false);
+	virtual void Close_Implementation(bool _is_skip_anim = false);
 
 private:
 	void SetWidgetState(EWidgetState _new_state);

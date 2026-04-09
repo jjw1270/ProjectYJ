@@ -316,7 +316,7 @@ void UWidgetBase::Hide(EWidgetHideType _hide_type, bool _is_skip_anim)
 	}
 }
 
-void UWidgetBase::Close(bool _is_skip_anim)
+void UWidgetBase::Close_Implementation(bool _is_skip_anim)
 {
 	Hide(EWidgetHideType::RemoveFromParent, _is_skip_anim);
 }
