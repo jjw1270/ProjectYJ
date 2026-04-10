@@ -161,10 +161,10 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Idle Anim 시작 (최초 1회)"))
 	FDM_OnIdleWidget _OnIdleEvent;
 
-	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Close Anim 시작"))
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Close 요청 직후, Close Anim 시작"))
 	FDM_OnClosingWidget _OnClosingEvent;
 
-	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Close Anim 완료"))
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Hide 직전, 내부 위젯 접근 가능, Remove/Hide 전"))
 	FDM_OnCloseWidget _OnCloseEvent;
 
 	UFUNCTION(BlueprintNativeEvent)

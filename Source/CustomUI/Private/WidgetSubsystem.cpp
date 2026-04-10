@@ -42,13 +42,16 @@ void UWidgetSubsystem::PlayerControllerChanged(APlayerController* _new_pc)
 	RebuildWidgets(Cast<AWidgetPlayerController>(_new_pc));
 }
 
-void UWidgetSubsystem::ClearAllWidgets(bool _clear_close_event)
+void UWidgetSubsystem::ClearAllWidgets(bool _clear_close_events)
 {
 #if FEATURE_PAGE
 	if (IsValid(_CurrentPage))
 	{
-		if (_clear_close_event)
+		if (_clear_close_events)
+		{
+			_CurrentPage->_OnClosingEvent.Clear();
 			_CurrentPage->_OnCloseEvent.Clear();
+		}
 
 		_CurrentPage->Close(true);
 		_CurrentPage = nullptr;
@@ -61,8 +64,11 @@ void UWidgetSubsystem::ClearAllWidgets(bool _clear_close_event)
 	{
 		if (IsValid(popup))
 		{
-			if (_clear_close_event)
+			if (_clear_close_events)
+			{
+				popup->_OnClosingEvent.Clear();
 				popup->_OnCloseEvent.Clear();
+			}
 
 			popup->Close(true);
 		}
