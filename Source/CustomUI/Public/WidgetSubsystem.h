@@ -27,7 +27,7 @@ private:
 	AWidgetPlayerController* GetLocalPlayerController() const;
 
 protected:
-	void ClearAllWidgets(bool _clear_close_event);
+	void ClearAllWidgets(bool _clear_closed_event);
 	void RebuildWidgets(AWidgetPlayerController* _pc);
 
 #pragma region Button

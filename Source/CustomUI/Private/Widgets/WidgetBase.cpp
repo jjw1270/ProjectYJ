@@ -108,11 +108,6 @@ void UWidgetBase::SetWidgetState(EWidgetState _new_state)
 	// broadcast events
 	switch (_WidgetState)
 	{
-	case EWidgetState::Hide:
-		if (_OnCloseEvent.IsBound())
-			_OnCloseEvent.Broadcast(this, (_WidgetHideType == EWidgetHideType::RemoveFromParent));
-		OnClose();
-		break;
 	case EWidgetState::Showing:
 		if (_OnShowEvent.IsBound())
 			_OnShowEvent.Broadcast(this);
@@ -120,13 +115,26 @@ void UWidgetBase::SetWidgetState(EWidgetState _new_state)
 
 		if (_IsTraverseWidgetToShow)
 			TraverseWidgetToShow();
-
 		break;
+
 	case EWidgetState::Idle:
 		if (_OnIdleEvent.IsBound())
 			_OnIdleEvent.Broadcast(this);
 		OnIdle();
 		break;
+
+	case EWidgetState::Hiding:
+		if (_OnClosingEvent.IsBound())
+			_OnClosingEvent.Broadcast(this);
+		OnClosing();
+		break;
+
+	case EWidgetState::Hide:
+		if (_OnClosedEvent.IsBound())
+			_OnClosedEvent.Broadcast(this, _WidgetHideType == EWidgetHideType::RemoveFromParent);
+		OnClosed(_WidgetHideType == EWidgetHideType::RemoveFromParent);
+		break;
+
 	default:
 		break;
 	}
@@ -316,7 +324,7 @@ void UWidgetBase::Hide(EWidgetHideType _hide_type, bool _is_skip_anim)
 	}
 }
 
-void UWidgetBase::Close_Implementation(bool _is_skip_anim)
+void UWidgetBase::Close(bool _is_skip_anim)
 {
 	Hide(EWidgetHideType::RemoveFromParent, _is_skip_anim);
 }

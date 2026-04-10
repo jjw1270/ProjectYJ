@@ -137,9 +137,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Hide(EWidgetHideType _hide_type, bool _is_skip_anim = false);
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable)
 	void Close(bool _is_skip_anim = false);
-	virtual void Close_Implementation(bool _is_skip_anim = false);
 
 private:
 	void SetWidgetState(EWidgetState _new_state);
@@ -153,7 +152,8 @@ public:
 public:
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnShowWidget, UWidgetBase*, _widget);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnIdleWidget, UWidgetBase*, _widget);
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDM_OnCloseWidget, UWidgetBase*, _widget, bool, _is_removed);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnClosingWidget, UWidgetBase*, _widget);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDM_OnClosedWidget, UWidgetBase*, _widget, bool, _is_removed);
 
 	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
 	FDM_OnShowWidget _OnShowEvent;
@@ -162,7 +162,10 @@ public:
 	FDM_OnIdleWidget _OnIdleEvent;
 
 	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
-	FDM_OnCloseWidget _OnCloseEvent;
+	FDM_OnClosingWidget _OnClosingEvent;
+
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
+	FDM_OnClosedWidget _OnClosedEvent;
 
 	UFUNCTION(BlueprintNativeEvent)
 	void OnShow();
@@ -173,8 +176,12 @@ public:
 	virtual void OnIdle_Implementation() {};
 
 	UFUNCTION(BlueprintNativeEvent)
-	void OnClose();
-	virtual void OnClose_Implementation() {};
+	void OnClosing();
+	virtual void OnClosing_Implementation() {};
+
+	UFUNCTION(BlueprintNativeEvent)
+	void OnClosed(bool _is_removed);
+	virtual void OnClosed_Implementation(bool _is_removed) {};
 
 #pragma endregion Event
 
