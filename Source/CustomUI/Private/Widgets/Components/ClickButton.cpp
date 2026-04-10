@@ -30,7 +30,7 @@ void UClickButton::NativeOnMouseLeave(const FPointerEvent& _mouse_event)
 {
 	Super::NativeOnMouseLeave(_mouse_event);
 
-	if (_ButtonState != EButtonState::Pressed)
+	if (!_DontResetButtonStateOnMouseLeaveWhenPressed || _ButtonState != EButtonState::Pressed)
 		ResetButtonState();
 }
 

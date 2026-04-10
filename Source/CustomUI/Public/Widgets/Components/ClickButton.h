@@ -16,6 +16,9 @@ class CUSTOMUI_API UClickButton : public UButtonBase
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Button")
+	bool _DontResetButtonStateOnMouseLeaveWhenPressed = false;
+
+	UPROPERTY(EditAnywhere, Category = "Button")
 	bool _UseSubClick = false;
 
 	UPROPERTY(EditAnywhere, Category = "Sound")
