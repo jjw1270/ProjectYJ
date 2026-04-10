@@ -130,11 +130,11 @@ void UWidgetBase::SetWidgetState(EWidgetState _new_state)
 		break;
 
 	case EWidgetState::Hide:
-		if (_OnClosedEvent.IsBound())
-			_OnClosedEvent.Broadcast(this, _WidgetHideType == EWidgetHideType::RemoveFromParent);
-		OnClosed(_WidgetHideType == EWidgetHideType::RemoveFromParent);
+		if (_OnCloseEvent.IsBound())
+			_OnCloseEvent.Broadcast(this);
+		OnClose();
 		break;
-
+		
 	default:
 		break;
 	}

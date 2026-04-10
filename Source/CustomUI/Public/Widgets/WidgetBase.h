@@ -153,19 +153,19 @@ public:
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnShowWidget, UWidgetBase*, _widget);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnIdleWidget, UWidgetBase*, _widget);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnClosingWidget, UWidgetBase*, _widget);
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDM_OnClosedWidget, UWidgetBase*, _widget, bool, _is_removed);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnCloseWidget, UWidgetBase*, _widget);
 
-	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Show Anim 시작"))
 	FDM_OnShowWidget _OnShowEvent;
 
-	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Idle Anim 시작 (최초 1회)"))
 	FDM_OnIdleWidget _OnIdleEvent;
 
-	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Close Anim 시작"))
 	FDM_OnClosingWidget _OnClosingEvent;
 
-	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
-	FDM_OnClosedWidget _OnClosedEvent;
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Close Anim 완료"))
+	FDM_OnCloseWidget _OnCloseEvent;
 
 	UFUNCTION(BlueprintNativeEvent)
 	void OnShow();
@@ -180,8 +180,8 @@ public:
 	virtual void OnClosing_Implementation() {};
 
 	UFUNCTION(BlueprintNativeEvent)
-	void OnClosed(bool _is_removed);
-	virtual void OnClosed_Implementation(bool _is_removed) {};
+	void OnClose();
+	virtual void OnClose_Implementation() {};
 
 #pragma endregion Event
 

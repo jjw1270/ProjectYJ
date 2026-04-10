@@ -42,13 +42,13 @@ void UWidgetSubsystem::PlayerControllerChanged(APlayerController* _new_pc)
 	RebuildWidgets(Cast<AWidgetPlayerController>(_new_pc));
 }
 
-void UWidgetSubsystem::ClearAllWidgets(bool _clear_closed_event)
+void UWidgetSubsystem::ClearAllWidgets(bool _clear_close_event)
 {
 #if FEATURE_PAGE
 	if (IsValid(_CurrentPage))
 	{
 		if (_clear_close_event)
-			_CurrentPage->_OnClosedEvent.Clear();
+			_CurrentPage->_OnCloseEvent.Clear();
 
 		_CurrentPage->Close(true);
 		_CurrentPage = nullptr;
@@ -61,8 +61,8 @@ void UWidgetSubsystem::ClearAllWidgets(bool _clear_closed_event)
 	{
 		if (IsValid(popup))
 		{
-			if (_clear_closed_event)
-				popup->_OnClosedEvent.Clear();
+			if (_clear_close_event)
+				popup->_OnCloseEvent.Clear();
 
 			popup->Close(true);
 		}
@@ -291,7 +291,7 @@ UPopupBase* UWidgetSubsystem::OpenPopup(TSubclassOf<UPopupBase> _popup_class)
 	auto popup = CreateWidget<UPopupBase>(pc, _popup_class);
 	if (IsValid(popup))
 	{
-		popup->_OnClosedEvent.AddDynamic(this, &UWidgetSubsystem::OnPopupClosed);
+		popup->_OnCloseEvent.AddDynamic(this, &UWidgetSubsystem::OnPopupClose);
 
 		popup->AddToViewport((int32)EWidgetZOrder::Popup);
 
@@ -309,7 +309,7 @@ UPopupBase* UWidgetSubsystem::OpenPopup(TSubclassOf<UPopupBase> _popup_class)
 	return popup;
 }
 
-void UWidgetSubsystem::OnPopupClosed(UWidgetBase* _widget, bool _is_removed)
+void UWidgetSubsystem::OnPopupClose(UWidgetBase* _widget)
 {
 	auto popup = Cast<UPopupBase>(_widget);
 	if (IsInvalid(popup))

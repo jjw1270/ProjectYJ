@@ -27,7 +27,7 @@ private:
 	AWidgetPlayerController* GetLocalPlayerController() const;
 
 protected:
-	void ClearAllWidgets(bool _clear_closed_event);
+	void ClearAllWidgets(bool _clear_close_event);
 	void RebuildWidgets(AWidgetPlayerController* _pc);
 
 #pragma region Button
@@ -86,7 +86,7 @@ protected:
 protected:
 	UPopupBase* OpenPopup(TSubclassOf<UPopupBase> _popup_class);
 
-	UFUNCTION() void OnPopupClosed(UWidgetBase* _widget, bool _is_removed);
+	UFUNCTION() void OnPopupClose(UWidgetBase* _widget);
 
 protected:
 	UPopupBase* GetTopPopup() const;
