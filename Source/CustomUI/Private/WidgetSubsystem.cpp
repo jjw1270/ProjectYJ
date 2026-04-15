@@ -42,15 +42,15 @@ void UWidgetSubsystem::PlayerControllerChanged(APlayerController* _new_pc)
 	RebuildWidgets(Cast<AWidgetPlayerController>(_new_pc));
 }
 
-void UWidgetSubsystem::ClearAllWidgets(bool _clear_close_events)
+void UWidgetSubsystem::ClearAllWidgets(bool _clear_hide_events)
 {
 #if FEATURE_PAGE
 	if (IsValid(_CurrentPage))
 	{
-		if (_clear_close_events)
+		if (_clear_hide_events)
 		{
-			_CurrentPage->_OnClosingEvent.Clear();
-			_CurrentPage->_OnCloseEvent.Clear();
+			_CurrentPage->_OnStartHideEvent.Clear();
+			_CurrentPage->_OnHideEvent.Clear();
 		}
 
 		_CurrentPage->Close(true);
@@ -64,10 +64,10 @@ void UWidgetSubsystem::ClearAllWidgets(bool _clear_close_events)
 	{
 		if (IsValid(popup))
 		{
-			if (_clear_close_events)
+			if (_clear_hide_events)
 			{
-				popup->_OnClosingEvent.Clear();
-				popup->_OnCloseEvent.Clear();
+				popup->_OnStartHideEvent.Clear();
+				popup->_OnHideEvent.Clear();
 			}
 
 			popup->Close(true);
@@ -297,7 +297,7 @@ UPopupBase* UWidgetSubsystem::OpenPopup(TSubclassOf<UPopupBase> _popup_class)
 	auto popup = CreateWidget<UPopupBase>(pc, _popup_class);
 	if (IsValid(popup))
 	{
-		popup->_OnCloseEvent.AddDynamic(this, &UWidgetSubsystem::OnPopupClose);
+		popup->_OnHideEvent.AddDynamic(this, &UWidgetSubsystem::OnHidePopup);
 
 		popup->AddToViewport((int32)EWidgetZOrder::Popup);
 
@@ -315,7 +315,7 @@ UPopupBase* UWidgetSubsystem::OpenPopup(TSubclassOf<UPopupBase> _popup_class)
 	return popup;
 }
 
-void UWidgetSubsystem::OnPopupClose(UWidgetBase* _widget)
+void UWidgetSubsystem::OnHidePopup(UWidgetBase* _widget, EWidgetHideType _hide_type)
 {
 	auto popup = Cast<UPopupBase>(_widget);
 	if (IsInvalid(popup))
@@ -325,14 +325,17 @@ void UWidgetSubsystem::OnPopupClose(UWidgetBase* _widget)
 	if (IsInvalid(pc))
 		return;
 
-	if (popup->GetConfig().RemainOnLevelChanged)
+	if (_hide_type == EWidgetHideType::RemoveFromParent)
 	{
-		_RemainingPopupClasses.Remove(popup->GetClass());
-	}
+		if (popup->GetConfig().RemainOnLevelChanged)
+		{
+			_RemainingPopupClasses.Remove(popup->GetClass());
+		}
 
-	if(_CurrentPopups.Contains(popup))
-	{
-		_CurrentPopups.Remove(popup);
+		if(_CurrentPopups.Contains(popup))
+		{
+			_CurrentPopups.Remove(popup);
+		}
 	}
 
 	// update mouse cursor

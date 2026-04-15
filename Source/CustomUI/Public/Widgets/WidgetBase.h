@@ -152,8 +152,8 @@ public:
 public:
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnShowWidget, UWidgetBase*, _widget);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnIdleWidget, UWidgetBase*, _widget);
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnClosingWidget, UWidgetBase*, _widget);
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDM_OnCloseWidget, UWidgetBase*, _widget);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDM_OnStartHideWidget, UWidgetBase*, _widget, EWidgetHideType, hide_type);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDM_OnHideWidget, UWidgetBase*, _widget, EWidgetHideType, hide_type);
 
 	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Show Anim 시작"))
 	FDM_OnShowWidget _OnShowEvent;
@@ -161,11 +161,11 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Idle Anim 시작 (최초 1회)"))
 	FDM_OnIdleWidget _OnIdleEvent;
 
-	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Close 요청 직후, Close Anim 시작"))
-	FDM_OnClosingWidget _OnClosingEvent;
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Hide/Close 요청 직후, Hide Anim 시작"))
+	FDM_OnStartHideWidget _OnStartHideEvent;
 
-	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Hide 직전, 내부 위젯 접근 가능, Remove/Hide 전"))
-	FDM_OnCloseWidget _OnCloseEvent;
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, meta = (Tooltip = "Hide/Close 직전, 내부 위젯 접근 가능, Remove/Hide 전"))
+	FDM_OnHideWidget _OnHideEvent;
 
 	UFUNCTION(BlueprintNativeEvent)
 	void OnShow();
@@ -176,12 +176,12 @@ public:
 	virtual void OnIdle_Implementation() {};
 
 	UFUNCTION(BlueprintNativeEvent)
-	void OnClosing();
-	virtual void OnClosing_Implementation() {};
+	void OnStartHide();
+	virtual void OnStartHide_Implementation() {};
 
 	UFUNCTION(BlueprintNativeEvent)
-	void OnClose();
-	virtual void OnClose_Implementation() {};
+	void OnHide();
+	virtual void OnHide_Implementation() {};
 
 #pragma endregion Event
 

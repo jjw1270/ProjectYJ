@@ -124,9 +124,9 @@ void UWidgetBase::SetWidgetState(EWidgetState _new_state)
 		break;
 
 	case EWidgetState::Hide:
-		if (_OnCloseEvent.IsBound())
-			_OnCloseEvent.Broadcast(this);
-		OnClose();
+		if (_OnHideEvent.IsBound())
+			_OnHideEvent.Broadcast(this, _WidgetHideType);
+		OnHide();
 		break;
 		
 	default:
@@ -308,9 +308,9 @@ void UWidgetBase::Hide(EWidgetHideType _hide_type, bool _is_skip_anim)
 
 	_WidgetHideType = _hide_type;
 
-	if (_OnClosingEvent.IsBound())
-		_OnClosingEvent.Broadcast(this);
-	OnClosing();
+	if (_OnStartHideEvent.IsBound())
+		_OnStartHideEvent.Broadcast(this, _WidgetHideType);
+	OnStartHide();
 
 	if (_WidgetState == EWidgetState::Hide)
 		return;
