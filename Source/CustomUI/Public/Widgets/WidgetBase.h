@@ -176,12 +176,12 @@ public:
 	virtual void OnIdle_Implementation() {};
 
 	UFUNCTION(BlueprintNativeEvent)
-	void OnStartHide();
-	virtual void OnStartHide_Implementation() {};
+	void OnStartHide(EWidgetHideType _hide_type);
+	virtual void OnStartHide_Implementation(EWidgetHideType _hide_type) {};
 
 	UFUNCTION(BlueprintNativeEvent)
-	void OnHide();
-	virtual void OnHide_Implementation() {};
+	void OnHide(EWidgetHideType _hide_type);
+	virtual void OnHide_Implementation(EWidgetHideType _hide_type) {};
 
 #pragma endregion Event
 
