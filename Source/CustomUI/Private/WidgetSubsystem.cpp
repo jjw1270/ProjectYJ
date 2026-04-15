@@ -126,10 +126,6 @@ void UWidgetSubsystem::InitRegistryWidgets()
 		return;
 	}
 
-	auto game_inst = GetGameInstance();
-	if (IsInvalid(game_inst))
-		return;
-
 	for (const auto& widget_class_pair : _WidgetRegistryDataAsset->GetWidgetClassMap())
 	{
 		const auto& widget_name = widget_class_pair.Key;
@@ -137,25 +133,30 @@ void UWidgetSubsystem::InitRegistryWidgets()
 
 		if (widget_name.IsNone() == false && IsValid(widget_class))
 		{
-			auto widget = CreateWidget<UWidgetBase>(game_inst, widget_class);
-			if (IsValid(widget))
-			{
-				_RegisteredWidgetMap.Add(widget_name, widget);
-			}
+			_RegisteredWidgetDataMap.Add(widget_name, FRegisteredWidgetData(widget_class));
 		}
 	}
 }
 
 UWidgetBase* UWidgetSubsystem::GetRegisteredWidget(FName _widget_name)
 {
-	auto widget_ptr = _RegisteredWidgetMap.Find(_widget_name);
-	if (IsInvalid(widget_ptr))
+	auto widget_data_ptr = _RegisteredWidgetDataMap.Find(_widget_name);
+	if (IsInvalid(widget_data_ptr))
 	{
-		TRACE_ERROR(TEXT("등록된 위젯이 없습니다 : %s"), *_widget_name.ToString());
+		TRACE_ERROR(TEXT("등록된 위젯 정보가 없습니다 : %s"), *_widget_name.ToString());
 		return nullptr;
 	}
 
-	return *widget_ptr;
+	if (IsInvalid(widget_data_ptr->WidgetInstance))
+	{
+		auto game_inst = GetGameInstance();
+		if (IsValid(game_inst))
+		{
+			widget_data_ptr->WidgetInstance = CreateWidget<UWidgetBase>(game_inst, widget_data_ptr->WidgetClass);
+		}
+	}
+
+	return widget_data_ptr->WidgetInstance;
 }
 
 UPageBase* UWidgetSubsystem::OpenPage(TSubclassOf<UPageBase> _page_class)

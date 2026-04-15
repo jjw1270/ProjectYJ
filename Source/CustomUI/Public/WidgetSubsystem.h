@@ -11,6 +11,29 @@ class UWidgetBase;
 class UPageBase;
 class UPopupBase;
 
+USTRUCT()
+struct FRegisteredWidgetData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	TSubclassOf<UWidgetBase> WidgetClass = nullptr;
+
+	UPROPERTY()
+	TObjectPtr<UWidgetBase> WidgetInstance = nullptr;
+
+public:
+	FRegisteredWidgetData() noexcept
+	{
+	}
+
+	FRegisteredWidgetData(const TSubclassOf<UWidgetBase>& _widget_class)
+		: WidgetClass(_widget_class)
+		, WidgetInstance(nullptr)
+	{ }
+};
+
 UCLASS()
 class CUSTOMUI_API UWidgetSubsystem : public ULocalPlayerSubsystem
 {
@@ -41,7 +64,7 @@ protected:
 	TObjectPtr<class UWidgetRegistryDataAsset> _WidgetRegistryDataAsset = nullptr;
 
 	UPROPERTY()
-	TMap<FName, TObjectPtr<UWidgetBase>> _RegisteredWidgetMap;  // map jump에도 사라지지 않음
+	TMap<FName, FRegisteredWidgetData> _RegisteredWidgetDataMap;  // map jump에도 사라지지 않음
 
 public:
 	UWidgetBase* GetRegisteredWidget(FName _widget_name);
