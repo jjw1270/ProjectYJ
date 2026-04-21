@@ -23,7 +23,7 @@ public class CustomUI : ModuleRules
 			}
 			);
 
-        PublicDefinitions.Add("FEATURE_PAGE=0");
+        PublicDefinitions.Add("FEATURE_PAGE=1");
 
         PublicDependencyModuleNames.AddRange(
 			new string[]
