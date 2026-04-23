@@ -22,13 +22,13 @@ protected:
 	EMouseLockMode _InMouseLockMode = EMouseLockMode::DoNotLock;
 
 	UPROPERTY(EditAnywhere, Category = "InputMode", meta = (EditCondition = "_InitialInputMode==EInputMode::GameAndUI"))
-	bool _HideCursorDuringCapture = true;
+	bool _HideCursorDuringCapture = false;
 
 	UPROPERTY(EditAnywhere, Category = "InputMode", meta = (EditCondition = "_InitialInputMode==EInputMode::GameOnly"))
 	bool _ConsumeCaptureMouseDown = false;
 
 	UPROPERTY(EditAnywhere)
-	bool _ShowMouseCursor = true;
+	bool _ShowMouseCursor = false;
 
 protected:
 	virtual void BeginPlay() override;
