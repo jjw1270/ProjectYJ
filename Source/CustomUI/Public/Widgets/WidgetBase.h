@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CustomUI.h"
 #include "Blueprint/UserWidget.h"
 #include "Sound/SoundCue.h"
 #include "WidgetBase.generated.h"

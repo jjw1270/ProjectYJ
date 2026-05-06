@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "CustomUI.h"
 #include "WidgetHelper.generated.h"
 
+class UWidgetBase;
 class UPageBase;
 class UPopupBase;
 

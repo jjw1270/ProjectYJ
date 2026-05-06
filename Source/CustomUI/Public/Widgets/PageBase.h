@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "WidgetBase.h"
+#include "WidgetDefines.h"
 #include "PageBase.generated.h"
 
 /**

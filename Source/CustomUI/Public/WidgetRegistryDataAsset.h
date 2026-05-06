@@ -21,7 +21,9 @@ protected:
     TMap<FName, TSubclassOf<UWidgetBase>> _WidgetClassMap;
 
 protected:
+#if WITH_EDITOR
     virtual void PostEditChangeProperty(struct FPropertyChangedEvent& _property_changed_event) override;
+#endif
 
 public:
     const  TMap<FName, TSubclassOf<UWidgetBase>>& GetWidgetClassMap() const { return _WidgetClassMap; }

@@ -2,6 +2,7 @@
 
 
 #include "Components/ButtonBase.h"
+#include "CommonUtils.h"
 #include "Components/SizeBox.h"
 #include "Components/Border.h"
 #include "Components/BorderSlot.h"
@@ -32,9 +33,9 @@ void UButtonBase::SetIsEnabled(bool _is_enabled)
 {
 	Super::SetIsEnabled(_is_enabled);
 
-	if(_is_enabled)
+	if (!_is_enabled)
 	{
-		TRACE_WARNING(TEXT("EButtonState::Disabled 를 사용해야 합니다!"));
+		TRACE_WARNING(TEXT("SetIsEnabled(false) 대신 UButtonBase::SetButtonDisabled(true)를 사용해주세요!"));
 	}
 }
 

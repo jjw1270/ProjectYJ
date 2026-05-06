@@ -36,7 +36,14 @@ AWidgetPlayerController* UWidgetSubsystem::GetLocalPlayerController() const
 
 void UWidgetSubsystem::PlayerControllerChanged(APlayerController* _new_pc)
 {
-	_DefaultShowMouseCursor = _new_pc->ShouldShowMouseCursor();
+	if (IsValid(_new_pc))
+	{
+		_DefaultShowMouseCursor = _new_pc->ShouldShowMouseCursor();
+	}
+	else
+	{
+		_DefaultShowMouseCursor = false;
+	}
 
 	ClearAllWidgets(true);
 	RebuildWidgets(Cast<AWidgetPlayerController>(_new_pc));

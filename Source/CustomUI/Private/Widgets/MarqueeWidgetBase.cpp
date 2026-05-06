@@ -2,6 +2,7 @@
 
 
 #include "Widgets/MarqueeWidgetBase.h"
+#include "CommonUtils.h"
 #include "WidgetHelper.h"
 #include "Components/NamedSlot.h"
 #include "Components/CanvasPanel.h"
@@ -16,7 +17,7 @@ void UMarqueeWidgetBase::NativePreConstruct()
 {
 	Super::NativePreConstruct();
 
-	if (UWidgetHelper::IsDesignTime(this))
+	if (UWidgetHelper::IsDesignTime(this) && IsValid(NS_Content))
 	{
 		auto ns_slot = Cast<UCanvasPanelSlot>(NS_Content->Slot);
 		if (IsValid(ns_slot))
@@ -95,6 +96,12 @@ void UMarqueeWidgetBase::NativeTick(const FGeometry& _geo, float _delta)
 
 void UMarqueeWidgetBase::UpdateTargetPos(const FGeometry& _geo)
 {
+	if (IsInvalid(NS_Content))
+	{
+		_CanMarqueeing = false;
+		return;
+	}
+
 	const auto& widget_size = _geo.GetLocalSize();
 	if (widget_size.IsNearlyZero(0.001f))
 	{
@@ -177,6 +184,9 @@ void UMarqueeWidgetBase::UpdateTargetPos(const FGeometry& _geo)
 
 void UMarqueeWidgetBase::DriveScroll(float _delta)
 {
+	if (IsInvalid(NS_Content))
+		return;
+
 	auto ns_slot = Cast<UCanvasPanelSlot>(NS_Content->Slot);
 	if (IsInvalid(ns_slot))
 		return;
@@ -234,6 +244,9 @@ void UMarqueeWidgetBase::DriveScroll(float _delta)
 
 void UMarqueeWidgetBase::DriveAlternateScroll(float _delta)
 {
+	if (IsInvalid(NS_Content))
+		return;
+
 	auto ns_slot = Cast<UCanvasPanelSlot>(NS_Content->Slot);
 	if (IsInvalid(ns_slot))
 		return;

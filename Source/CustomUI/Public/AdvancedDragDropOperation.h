@@ -18,7 +18,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (Tooltip = "위젯 내부에서 피벗으로부터의 마우스 Offset"))
 	FVector2D _LocalOffset = FVector2D::ZeroVector;
 
-	UPROPERTY(meta = (Tooltip = "마우스 시작 position"))
+	UPROPERTY(BlueprintReadWrite, meta = (Tooltip = "마우스 시작 position"))
 	FVector2D _DragStartScreenPos = FVector2D::ZeroVector;
 
 };

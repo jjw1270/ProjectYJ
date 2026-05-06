@@ -2,7 +2,7 @@
 
 
 #include "Widgets/Components/TypingRichTextBlock.h"
-#include "CustomUI.h"
+#include "CommonUtils.h"
 
 void UTypingRichTextBlock::SynchronizeProperties()
 {
@@ -202,7 +202,7 @@ void UTypingRichTextBlock::StopTyping(bool _is_clear)
 	}
 }
 
-void UTypingRichTextBlock::SetTypingSpped(float _speed)
+void UTypingRichTextBlock::SetTypingSpeed(float _speed)
 {
 	_TypingSpeed = _speed;
 

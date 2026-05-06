@@ -2,6 +2,7 @@
 
 
 #include "WidgetHelper.h"
+#include "CommonUtils.h"
 #include "WidgetSubsystem.h"
 #include "Widgets/PageBase.h"
 #include "Widgets/PopupBase.h"

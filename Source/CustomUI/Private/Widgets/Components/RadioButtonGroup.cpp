@@ -2,6 +2,7 @@
 
 
 #include "Components/RadioButtonGroup.h"
+#include "CommonUtils.h"
 #include "Components/StackBox.h"
 #include "Components/StackBoxSlot.h"
 #include "Components/CanvasPanelSlot.h"
@@ -77,11 +78,26 @@ void URadioButtonGroup::OnClickRadioButton(UButtonBase* _btn)
 	if (IsInvalid(_btn))
 		return;
 
+	if (_btn->GetWidgetID().IsNone())
+	{
+		TRACE_WARNING(TEXT("Radio Button(%s)의 WidgetID가 설정되지 않아 선택할 수 없습니다."), *_btn->GetName());
+		return;
+	}
+
 	SelectRadioButtonByWidgetID(_btn->GetWidgetID());
 }
 
 void URadioButtonGroup::SelectRadioButtonByWidgetID(FName _widget_id)
 {
+	if (IsInvalid(StackBox))
+		return;
+
+	if (_widget_id.IsNone())
+	{
+		TRACE_WARNING(TEXT("WidgetID가 None인 Radio Button은 선택할 수 없습니다."));
+		return;
+	}
+
 	for (auto child : StackBox->GetAllChildren())
 	{
 		auto radio_btn = Cast<URadioButton>(child);
@@ -104,10 +120,20 @@ void URadioButtonGroup::SelectRadioButtonByWidgetID(FName _widget_id)
 
 void URadioButtonGroup::SelectRadioButtonByIndex(int32 _index)
 {
-	if (_index < 0 || _index >= StackBox->GetChildrenCount())
+	if (IsInvalid(StackBox))
+		return;
+
+	const int32 child_count = StackBox->GetChildrenCount();
+	if (child_count <= 0)
+	{
+		TRACE_WARNING(TEXT("Radio Button Group에 선택할 버튼이 없습니다."));
+		return;
+	}
+
+	if (_index < 0 || _index >= child_count)
 	{
 		TRACE_WARNING(TEXT("out of index : %d"), _index);
-		_index = FMath::Clamp(_index, 0, StackBox->GetChildrenCount() - 1);
+		_index = FMath::Clamp(_index, 0, child_count - 1);
 	}
 
 	int32 idx = 0;

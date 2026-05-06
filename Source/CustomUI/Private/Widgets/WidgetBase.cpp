@@ -2,6 +2,7 @@
 
 
 #include "Widgets/WidgetBase.h"
+#include "CommonUtils.h"
 #include "Animation/WidgetAnimation.h"
 #include "Blueprint/WidgetTree.h"
 #include "MovieScene.h"

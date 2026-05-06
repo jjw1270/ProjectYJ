@@ -44,7 +44,7 @@ public:
 	void StopTyping(bool _is_clear);
 
 	UFUNCTION(BlueprintCallable)
-	void SetTypingSpped(float _speed);
+	void SetTypingSpeed(float _speed);
 
 protected:
 	void RefineTypingText();

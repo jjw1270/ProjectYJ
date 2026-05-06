@@ -2,6 +2,7 @@
 
 
 #include "Components/ToggleButton.h"
+#include "CommonUtils.h"
 #include "Components/Border.h"
 #include "Components/TextBlock.h"
 
